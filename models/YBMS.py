@@ -18,7 +18,7 @@ class YBMS(nn.Module):
         # self.cnn5 = UNET()
         # self.cnn6 = UNET()
         # self.cnn7 = UNET_mini(2)
-        self.cnn8 = UNET_mini(2)
+        self.cnn8 = UNET(2)
 
         self.as0_3 = AS(1.685e-3,size=size)
 

@@ -36,7 +36,7 @@ def np_cal_psnr(y_hat,y):
 
 # net = build_model(size=(768,768)).to('cuda')
 net = YBMS(size=(768,768)).to('cuda')
-net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params2\\bestparams.pth'))
+net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params3\\lastparams.pth'))
 net.eval()
 
 
@@ -168,6 +168,9 @@ def test_param(file_name):
 
     y_ang = (np.angle(y_np) - np.min(np.angle(y_np)))*200
     gt_ang = (np.angle(gt_np) - np.min(np.angle(gt_np)))*200
+
+    # y_ang = np.angle(y_np)
+    # gt_ang = np.angle(gt_np)
 
     # print("gt_ang:\n", np.max(gt_ang)) #打印 phi
     
