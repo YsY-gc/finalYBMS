@@ -17,7 +17,7 @@ if __name__ == "__main__":
  
     lr = 1e-4
     optimizer = optim.Adam(net.parameters(), lr=lr)
-    num_epochs = 300
+    num_epochs = 2000
     train_iter = Data().loader_train
     test_iter = Data().loader_test
 
