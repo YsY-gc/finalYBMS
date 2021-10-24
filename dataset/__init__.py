@@ -8,7 +8,7 @@ class Data():
     def __init__(self):
         self.loader_train = None  
         module_train = import_module('dataset.' + 'dual_unsupervised')
-        trainset = module_train.TrainSetLoader('E:\\finallYBMS\\DATASETS4')
+        trainset = module_train.TrainSetLoader('E:\\finallYBMS\\peoplePic\\DATASETS_X')
         self.loader_train = DataLoader(
             trainset,
             batch_size=1,# 必须为1
@@ -18,7 +18,7 @@ class Data():
             )
 
         module_test = import_module('dataset.' +  'dual_unsupervised')
-        testset = module_test.TestSetLoader('E:\\finallYBMS\\DATASETS4')
+        testset = module_test.TestSetLoader('E:\\finallYBMS\\peoplePic\\DATASETS_X')
         self.loader_test = DataLoader(
             testset,
             batch_size=1,# 必须为1
