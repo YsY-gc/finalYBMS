@@ -14,8 +14,8 @@ class YBMS(nn.Module):
         self.cnn1 = UNET_mini()
         self.cnn2 = UNET_mini()
         self.cnn3 = UNET_mini()
-        # self.cnn4 = UNET()
-        # self.cnn5 = UNET()
+        self.cnn4 = UNET_mini()
+        self.cnn5 = UNET_mini()
         # self.cnn6 = UNET()
         # self.cnn7 = UNET_mini(2)
         self.cnn8 = UNET(2)
@@ -27,6 +27,8 @@ class YBMS(nn.Module):
         self.as2_1 = AS(-0.475e-3,size=size)
         self.as3_0 = AS(-1.685e-3,size=size)
 
+        self.as0_5 = AS(2.682e-3,size=size)
+
         self.as0_1 = AS(0.710e-3,size=size)
         self.as3_1 = AS(-0.975e-3,size=size)        #***
         self.as3_2 = AS(-0.500e-3,size=size)
@@ -36,7 +38,11 @@ class YBMS(nn.Module):
         self.as1_3 = AS(0.975e-3,size=size) #*
 
         self.as3_4 = AS(0.493e-3,size=size)
+        self.as4_3 = AS(-0.493e-3,size=size)
+
         self.as4_5 = AS(0.504e-3,size=size)
+        self.as5_4 = AS(-0.504e-3,size=size)
+
         self.as4_6 = AS(1.002e-3,size=size)     #**
         self.as3_5 = AS(0.997e-3,size=size) #*
 
@@ -57,6 +63,7 @@ class YBMS(nn.Module):
         self.alpha6 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))
         self.alpha7 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
         self.alpha8 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
+        self.alpha9 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
         # self.alpha6 = None
         # self.alpha7 = None
         # self.alpha8 = None
@@ -67,6 +74,8 @@ class YBMS(nn.Module):
         U1_ob = self.cnn1(x1)
         U2_ob = self.cnn2(x2)
         U3_ob = self.cnn3(x3)
+        U4_ob = self.cnn4(x4)
+        U5_ob = self.cnn5(x5)
 
 
         # U4_ob = self.cnn4(x4)
@@ -75,7 +84,14 @@ class YBMS(nn.Module):
         # U_init = (self.as1_0(x1) + self.as2_0(x2) + self.as3_0(x3)) / 3 
 
         # iter 1
-        U2_pr = self.as3_2(U3_ob)
+
+        U4_pr = self.as5_4(U5_ob)
+        U4 = self.alpha4 * 10 * U4_ob + (1 - self.alpha4 * 10) * U4_pr
+
+        U3_pr = self.as4_3(U4)
+        U3 = self.alpha3 * 10 * U3_ob + (1 - self.alpha3 * 10) * U3_pr
+
+        U2_pr = self.as3_2(U3)
         U2 = self.alpha2 * 10 * U2_ob + (1 - self.alpha2 * 10) * U2_pr
 
         U1_pr = self.as2_1(U2)
@@ -86,14 +102,20 @@ class YBMS(nn.Module):
         #iter 2
         # U0 = self.cnn7(U0)
 
-        U3_pr = self.as0_3(U0)
-        U3 = self.alpha3 * 10 * U3_ob + (1 - self.alpha3 * 10) * U3_pr
+        U5_pr = self.as0_5(U0)
+        U5 = self.alpha5 * 10 * U5_ob + (1 - self.alpha5 * 10) * U5_pr
+
+        U4_pr = self.as5_4(U5)
+        U4 = self.alpha6 * 10 * U4_ob + (1 - self.alpha6 * 10) * U4_pr
+
+        U3_pr = self.as4_3(U4)
+        U3 = self.alpha7 * 10 * U3_ob + (1 - self.alpha7 * 10) * U3_pr
 
         U2_pr = self.as3_2(U3)
-        U2 = self.alpha4 * 10 * U2_ob + (1 - self.alpha4 * 10) * U2_pr
+        U2 = self.alpha8 * 10 * U2_ob + (1 - self.alpha8 * 10) * U2_pr
 
         U1_pr = self.as2_1(U2)
-        U1 = self.alpha5 * 10 * U1_ob + (1 - self.alpha5 * 10) * U1_pr
+        U1 = self.alpha9 * 10 * U1_ob + (1 - self.alpha9 * 10) * U1_pr
 
         U0 = self.as1_0(U1)#===========================
 
@@ -117,6 +139,8 @@ class YBMS(nn.Module):
         U1 = self.as0_1(U0)
         U2 = self.as1_2(U1)
         U3 = self.as2_3(U2)
+        U4 = self.as3_4(U3)
+        U5 = self.as4_5(U4)
         
         U_test = None
 
@@ -130,11 +154,11 @@ class YBMS(nn.Module):
         x1p = self.s(U1)
         x2p = self.s(U2)
         x3p = self.s(U3)
-        # x4p = self.s(U4)
-        # x5p = self.s(U5)
+        x4p = self.s(U4)
+        x5p = self.s(U5)
         # x6p = self.s(U6)
        
-        return x1p, x2p, x3p, U1, a1, a2, a3, a4, a5
+        return x1p, x2p, x3p, x4p, x5p, U1, a1, a2, a3, a4, a5
 
 def build_model(size=(768,768)):
     net = YBMS(size=size)

@@ -36,7 +36,7 @@ def np_cal_psnr(y_hat,y):
 
 # net = build_model(size=(768,768)).to('cuda')
 net = YBMS(size=(768,768)).to('cuda')
-net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params6\\lastparams.pth'))
+net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params7\\bestparams.pth'))
 net.eval()
 
 
@@ -116,7 +116,7 @@ def test_param(file_name):
     # input6 = input6[:,:,1300+2:2068+2,2000-5:2768-5]
     # input6 = input6.to('cuda')     
 
-    x1p, x2p, x3p, U1, a1, a2, a3, a4, a5= net(input1, input2, input3, input4, input5, input6)
+    x1p, x2p, x3p, x4p, x5p, U1, a1, a2, a3, a4, a5= net(input1, input2, input3, input4, input5, input6)
 
     # print("U_test:\n", U_test)
 
@@ -127,8 +127,8 @@ def test_param(file_name):
     print("x1 x1pp psnr: ", cal_psnr(x1p,input1))
     print("x2 x2pp psnr: ", cal_psnr(x2p,input2))
     print("x3 x3pp psnr: ", cal_psnr(x3p,input3))
-    # print("x4 x4pp psnr: ", cal_psnr(x4p,input4))
-    # print("x5 x5pp psnr: ", cal_psnr(x5p,input5))
+    print("x4 x4pp psnr: ", cal_psnr(x4p,input4))
+    print("x5 x5pp psnr: ", cal_psnr(x5p,input5))
     # print("x6 x6pp psnr: ", cal_psnr(x6p,input6))
 
 
