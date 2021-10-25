@@ -272,7 +272,65 @@ class UNET_mini(nn.Module):
         O = self.cb2(T4)
         return O
 
-# net = UNET_mini(2)
+
+class UNET_mini2(nn.Module):
+    def __init__(self,inChannels=1):
+        super(UNET_mini2,self).__init__()
+
+        self.dsb1 = DownSample_blk(inChannels,8)
+        self.dsl1 = DownSample_lay()
+
+        self.dsb2 = DownSample_blk(8,16)
+        self.dsl2 = DownSample_lay()
+
+        self.dsb3 = DownSample_blk(16,32)
+        self.dsl3 = DownSample_lay()
+
+        self.dsb4 = DownSample_blk(32,64)
+        self.dsl4 = DownSample_lay()
+
+        self.cb1 = Conv_blk(64,64)
+
+        self.usl1 = UpSample_lay(64,64)
+        self.usb1 = UpSample_blk(128,32)
+
+        self.usl2 = UpSample_lay(32,32)
+        self.usb2 = UpSample_blk(64,16)
+
+        self.usl3 = UpSample_lay(16,16)
+        self.usb3 = UpSample_blk(32,8)
+
+        self.usl4 = UpSample_lay(8,8)
+        self.usb4 = UpSample_blk(16,8) 
+
+        self.cb2 = Conv_blk(8,2) 
+
+    def forward(self, X):
+        cat1 = self.dsb1(X); D1 = self.dsl1(cat1)
+        
+        cat2 = self.dsb2(D1);D2 = self.dsl2(cat2)
+        
+        cat3 = self.dsb3(D2);D3 = self.dsl3(cat3)
+        
+        cat4 = self.dsb4(D3);D4 = self.dsl4(cat4)
+        
+        T = self.cb1(D4);U1 = self.usl1(T)
+        tac1 = torch.cat((U1,cat4),1)
+
+        T1 = self.usb1(tac1);U2 = self.usl2(T1)
+        tac2 = torch.cat((U2,cat3),1)
+
+        T2 = self.usb2(tac2);U3 = self.usl3(T2)
+        tac3 = torch.cat((U3,cat2),1)
+
+        T3 = self.usb3(tac3);U4 = self.usl4(T3)
+        tac4 = torch.cat((U4,cat1),1)
+
+        T4 = self.usb4(tac4)
+
+        O = self.cb2(T4)
+        return O
+# net = UNET_mini2(2)
 # x = torch.rand(1,2,512,512)
 # y = net(x)
 # print(y.shape)

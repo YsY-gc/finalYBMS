@@ -3,7 +3,7 @@ from torch import nn
 import torch
 import numpy as np
 from PIL import Image
-from models.net_tools import UNET, AS, S, UNET_mini
+from models.net_tools import *
 from torch.autograd import Variable
 
 # z=[0.710mm 1.185mm 1.685mm 2.178mm 2.682mm 3.180mm]
@@ -11,11 +11,11 @@ class YBMS(nn.Module):
     def __init__(self,size = (768,768)):
         super(YBMS, self).__init__()
 
-        self.cnn1 = UNET_mini()
-        self.cnn2 = UNET_mini()
-        self.cnn3 = UNET_mini()
-        self.cnn4 = UNET_mini()
-        self.cnn5 = UNET_mini()
+        self.cnn1 = UNET_mini2()
+        self.cnn2 = UNET_mini2()
+        self.cnn3 = UNET_mini2()
+        self.cnn4 = UNET_mini2()
+        self.cnn5 = UNET_mini2()
         # self.cnn6 = UNET()
         # self.cnn7 = UNET_mini(2)
         self.cnn8 = UNET(2)
