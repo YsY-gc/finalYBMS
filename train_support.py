@@ -7,14 +7,14 @@ from tqdm import tqdm
 
 def train_mu(net, train_iter, test_iter, optimizer, device, num_epochs):
     net = net.to(device)
-    net.load_state_dict(torch.load("I:\\finalYBMS\\params\\params9\\lastparams.pth"))
+    net.load_state_dict(torch.load("I:\\finalYBMS\\params\\params9\\bestparams.pth"))
 
     print("training on", device)
     loss1 = torch.nn.L1Loss()
 
     label_epoch = []
     label_loss = []
-    best_check_point = 27.5351 #51
+    best_check_point = 0
     for epoch in range(num_epochs):
         train_l_sum, n, batch_count, start = 0.0, 0, 0, time.time()
         tqdm_train = tqdm(train_iter, ncols=60)
@@ -42,10 +42,10 @@ def train_mu(net, train_iter, test_iter, optimizer, device, num_epochs):
         #测试集损失    
         tl, psnr = test_loss(test_iter, net, device=device)
         print('epoch %d,train loss %.4f, test loss %.4f, psnr %.4f,time %.1f sec, a1 %.4f, a2 %.4f, a3 %.4f, a4 %.4f, a5 %.4f\n'
-              % (epoch + 1 + 3, train_l_sum / batch_count, tl, psnr,time.time() - start, a1, a2, a3, a4, a5))
+              % (epoch + 1 , train_l_sum / batch_count, tl, psnr,time.time() - start, a1, a2, a3, a4, a5))
         message = 'epoch %d,train loss %.4f, test loss %.4f, psnr %.4f,time %.1f sec, a1 %.4f, a2 %.4f, a3 %.4f, a4 %.4f, a5 %.4f\n' \
-                 % (epoch + 1 + 3, train_l_sum / batch_count, tl, psnr,time.time() - start, a1, a2, a3, a4, a5)
-        file = open("I:\\finalYBMS\\log\\log9.txt",'a+')
+                 % (epoch + 1 , train_l_sum / batch_count, tl, psnr,time.time() - start, a1, a2, a3, a4, a5)
+        file = open("I:\\finalYBMS\\log\\log10.txt",'a+')
         file.write(message)
         file.close()
         #画损失图
@@ -55,9 +55,9 @@ def train_mu(net, train_iter, test_iter, optimizer, device, num_epochs):
         #每个epoch保存一次模型参数
         if psnr > best_check_point:
             best_check_point = psnr
-            torch.save(net.state_dict(),'I:\\finalYBMS\\params\\params9\\bestparams.pth')
+            torch.save(net.state_dict(),'I:\\finalYBMS\\params\\params10\\bestparams.pth')
         
-        torch.save(net.state_dict(),'I:\\finalYBMS\\params\\params9\\lastparams.pth')
+        torch.save(net.state_dict(),'I:\\finalYBMS\\params\\params10\\lastparams.pth')
     plt.plot(label_epoch,label_loss)
     plt.show()
     

@@ -36,7 +36,7 @@ def np_cal_psnr(y_hat,y):
 
 # net = build_model(size=(768,768)).to('cuda')
 net = YBMS(size=(768,768)).to('cuda')
-net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params9\\bestparams.pth'))
+net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params10\\bestparams.pth'))
 net.eval()
 
 
