@@ -11,11 +11,11 @@ class YBMS(nn.Module):
     def __init__(self,size = (768,768)):
         super(YBMS, self).__init__()
 
-        self.cnn1 = UNET_mini2()
-        self.cnn2 = UNET_mini2()
-        self.cnn3 = UNET_mini2()
-        self.cnn4 = UNET_mini2()
-        self.cnn5 = UNET_mini2()
+        self.cnn1 = UNET_mini3()
+        self.cnn2 = UNET_mini3()
+        self.cnn3 = UNET_mini3()
+        self.cnn4 = UNET_mini3()
+        self.cnn5 = UNET_mini3()
         # self.cnn6 = UNET()
         # self.cnn7 = UNET_mini(2)
         self.cnn8 = UNET(2)
