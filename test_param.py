@@ -41,30 +41,7 @@ net.eval()
 
 
 def test_param(file_name):
-    # input1 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\0710\\" + file_name);input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
-    # input2 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\1185\\" + file_name);input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
-    # input3 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\1685\\" + file_name);input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
-    # input4 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\2178\\" + file_name);input4 = np.array(input4);input4 = torch.from_numpy(input4).float()
-    # input5 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\2682\\" + file_name);input5 = np.array(input5);input5 = torch.from_numpy(input5).float()
-    # input6 = Image.open("E:\\finallYBMS\\DATASETS4\\testdata\\3180\\" + file_name);input6 = np.array(input6);input6 = torch.from_numpy(input6).float()
-    # input1 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\0710\\" + file_name);input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
-    # input2 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\1185\\" + file_name);input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
-    # input3 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\1685\\" + file_name);input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
-    # input4 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\2178\\" + file_name);input4 = np.array(input4);input4 = torch.from_numpy(input4).float()
-    # input5 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\2682\\" + file_name);input5 = np.array(input5);input5 = torch.from_numpy(input5).float()
-    # input6 = Image.open("E:\\finallYBMS\\peoplePic\\DATASETS_X\\testdata\\3180\\" + file_name);input6 = np.array(input6);input6 = torch.from_numpy(input6).float()
-    # input1 = Image.open("I:\\拍摄\\平滑肌20210426\\405.bmp");input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
-    # input2 = Image.open("I:\\拍摄\\平滑肌20210426\\520.bmp");input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
-    # input3 = Image.open("I:\\拍摄\\平滑肌20210426\\785.bmp");input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
-    # input1 = Image.open("I:\\拍摄\\分辨率板20210429\\405.bmp");input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
-    # input2 = Image.open("I:\\拍摄\\分辨率板20210429\\638.bmp");input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
-    # input3 = Image.open("I:\\拍摄\\分辨率板20210429\\808.bmp");input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
-    # input1 = Image.open("E:\\finallYBMS\\01.bmp").convert('L');input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
-    # input2 = Image.open("E:\\finallYBMS\\02.bmp").convert('L');input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
-    # input3 = Image.open("E:\\finallYBMS\\03.bmp").convert('L');input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
-    # input4 = Image.open("E:\\finallYBMS\\04.bmp").convert('L');input4 = np.array(input4);input4 = torch.from_numpy(input4).float()
-    # input5 = Image.open("E:\\finallYBMS\\05.bmp").convert('L');input5 = np.array(input5);input5 = torch.from_numpy(input5).float()
-    # input6 = Image.open("E:\\finallYBMS\\06.bmp").convert('L');input6 = np.array(input6);input6 = torch.from_numpy(input6).float()
+
     input1 = Image.open("E:\\finallYBMS\\DATASETSU\\testdata\\0710\\1.bmp").convert('L');input1 = np.array(input1);input1 = torch.from_numpy(input1).float()
     input2 = Image.open("E:\\finallYBMS\\DATASETSU\\testdata\\1185\\1.bmp").convert('L');input2 = np.array(input2);input2 = torch.from_numpy(input2).float()
     input3 = Image.open("E:\\finallYBMS\\DATASETSU\\testdata\\1685\\1.bmp").convert('L');input3 = np.array(input3);input3 = torch.from_numpy(input3).float()
@@ -92,42 +69,9 @@ def test_param(file_name):
 
     input6 = input6[:,:,0:768,0:768]
     input6 = input6.to('cuda')
-
-    #平滑肌
-    # input1 = input1[:,:,1300:2068,1300:2068]
-    # input1 = input1.to('cuda')
-
-    # input2 = input2[:,:,1300-3:2068-3,1300-2:2068-2]
-    # input2 = input2.to('cuda')
-
-    # input3 = input3[:,:,1300+4:2068+4,1300+6:2068+6]
-    # input3 = input3.to('cuda')
-
-    # 分辨率版
-    # input1 = input1[:,:,1300:2068,2000:2768]
-    # input1 = input1.to('cuda')
-
-    # input2 = input2[:,:,1300+1:2068+1,2000-1:2768-1]
-    # input2 = input2.to('cuda')
-
-    # input3 = input3[:,:,1300+1:2068+1,2000-2:2768-2]
-    # input3 = input3.to('cuda')
-
-    # input4 = input4[:,:,1300+2:2068+2,2000-3:2768-3]
-    # input4 = input4.to('cuda')
-
-    # input5 = input5[:,:,1300+2:2068+2,2000-4:2768-4]
-    # input5 = input5.to('cuda')
-
-    # input6 = input6[:,:,1300+2:2068+2,2000-5:2768-5]
-    # input6 = input6.to('cuda')     
+   
 
     x1p, x2p, x3p, x4p, x5p, U1, a1, a2, a3, a4, a5= net(input1, input2, input3, input4, input5, input6)
-
-    # print("U_test:\n", U_test)
-
-    # U3 =  0.257 * U3_ob (去除伪影)  + 0.743 * U3_test
-
 
 
     print("x1 x1pp psnr: ", cal_psnr(x1p,input1))
@@ -135,7 +79,6 @@ def test_param(file_name):
     print("x3 x3pp psnr: ", cal_psnr(x3p,input3))
     print("x4 x4pp psnr: ", cal_psnr(x4p,input4))
     print("x5 x5pp psnr: ", cal_psnr(x5p,input5))
-    # print("x6 x6pp psnr: ", cal_psnr(x6p,input6))
 
 
 # z=[0.710mm 1.185mm 1.685mm 2.178mm 2.682mm 3.180mm]
@@ -146,11 +89,6 @@ def test_param(file_name):
 
 
     y = testnet(U1)
-    # y = testnet(U_test)
-    # y = testnet2(U_test)
-    # y = testnet3(U_test)
-
-    # y = U1
 
     y_real = y[0,0,:,:]
     y_imag = y[0,1,:,:]

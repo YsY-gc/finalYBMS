@@ -1,89 +1,70 @@
 
-from torch import nn
+from torch import ne, nn
 import torch
 import numpy as np
 from PIL import Image
 from models.net_tools import *
 from torch.autograd import Variable
+from models.YBMS import *
 
 # z=[0.710mm 1.185mm 1.685mm 2.178mm 2.682mm 3.180mm]
-class YBMS(nn.Module):
+class YBMS5_3(nn.Module):
     def __init__(self,size = (768,768)):
-        super(YBMS, self).__init__()
+        super(YBMS5_3, self).__init__()
 
         self.cnn1 = UNET_mini3()
-        self.cnn2 = UNET_mini3()
         self.cnn3 = UNET_mini3()
-        self.cnn4 = UNET_mini3()
         self.cnn5 = UNET_mini3()
 
         self.cnn8 = UNET(2)
 
-        self.as0_3 = AS(1.685e-3,size=size)
+
 
         self.as1_0 = AS(-0.710e-3,size=size)
-        self.as2_0 = AS(-1.185e-3,size=size)
-        self.as2_1 = AS(-0.475e-3,size=size)
-        self.as3_0 = AS(-1.685e-3,size=size)
+        self.as0_1 = AS(0.710e-3,size=size)
+
 
         self.as0_5 = AS(2.682e-3,size=size)
 
-        self.as0_1 = AS(0.710e-3,size=size)
-        self.as3_1 = AS(-0.975e-3,size=size)        #***
-        self.as3_2 = AS(-0.500e-3,size=size)
-        self.as1_2 = AS(0.475e-3,size=size)         #***
-        self.as2_3 = AS(0.500e-3,size=size)         #***
-        self.as2_4 = AS(0.993e-3,size=size)     #**
-        self.as1_3 = AS(0.975e-3,size=size) #*
+        self.as5_3 = AS(-0.997e-3,size=size)
+        self.as3_5 = AS(0.997e-3,size=size)
 
-        self.as3_4 = AS(0.493e-3,size=size)
-        self.as4_3 = AS(-0.493e-3,size=size)
+        self.as3_1 = AS(-0.975e-3,size=size)
+        self.as1_3 = AS(0.975e-3,size=size)
 
-        self.as4_5 = AS(0.504e-3,size=size)
-        self.as5_4 = AS(-0.504e-3,size=size)
 
-        self.as4_6 = AS(1.002e-3,size=size)     #**
-        self.as3_5 = AS(0.997e-3,size=size) #*
 
-        self.as5_6 = AS(0.498e-3,size=size) #*
-        self.as6_1 = AS(-2.47e-3,size=size) #*
-        self.as6_2 = AS(-1.995e-3,size=size)    #** 
         
         self.s = S()
 
         self.alpha1 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))
-        self.alpha2 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))
+
         self.alpha3 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))
-        self.alpha4 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  #4当11
+
         self.alpha5 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  #5当22
 
-        self.alpha6 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))
+
         self.alpha7 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
-        self.alpha8 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
+
         self.alpha9 = torch.nn.Parameter((torch.ones(1)*0.05).to('cuda').requires_grad_(True))  
 
 
-    def forward(self,x1,x2,x3,x4,x5,x6):
+    def forward(self,x1,x3,x5):
 
 
         U1_ob = self.cnn1(x1)
-        U2_ob = self.cnn2(x2)
+
         U3_ob = self.cnn3(x3)
-        U4_ob = self.cnn4(x4)
+
         U5_ob = self.cnn5(x5)
 
 
 
-        U4_pr = self.as5_4(U5_ob)
-        U4 = self.alpha4 * 10 * U4_ob + (1 - self.alpha4 * 10) * U4_pr
-
-        U3_pr = self.as4_3(U4)
+        U3_pr = self.as5_3(U5_ob)
         U3 = self.alpha3 * 10 * U3_ob + (1 - self.alpha3 * 10) * U3_pr
 
-        U2_pr = self.as3_2(U3)
-        U2 = self.alpha2 * 10 * U2_ob + (1 - self.alpha2 * 10) * U2_pr
 
-        U1_pr = self.as2_1(U2)
+        U1_pr = self.as3_1(U3)
         U1 = self.alpha1 * 10 * U1_ob + (1 - self.alpha1 * 10) * U1_pr
 
         U0 = self.as1_0(U1)#===========================
@@ -94,64 +75,58 @@ class YBMS(nn.Module):
         U5_pr = self.as0_5(U0)
         U5 = self.alpha5 * 10 * U5_ob + (1 - self.alpha5 * 10) * U5_pr
 
-        U4_pr = self.as5_4(U5)
-        U4 = self.alpha6 * 10 * U4_ob + (1 - self.alpha6 * 10) * U4_pr
 
-        U3_pr = self.as4_3(U4)
+        U3_pr = self.as5_3(U5)
         U3 = self.alpha7 * 10 * U3_ob + (1 - self.alpha7 * 10) * U3_pr
 
-        U2_pr = self.as3_2(U3)
-        U2 = self.alpha8 * 10 * U2_ob + (1 - self.alpha8 * 10) * U2_pr
 
-        U1_pr = self.as2_1(U2)
+        U1_pr = self.as3_1(U3)
         U1 = self.alpha9 * 10 * U1_ob + (1 - self.alpha9 * 10) * U1_pr
 
         U0 = self.as1_0(U1)#===========================
 
-        #iter 3
-        # U0 = self.cnn7(U0)
-
-        # U3_pr = self.as0_3(U0)
-        # U3 = self.alpha6 * 10 * U3_ob + (1 - self.alpha6 * 10) * U3_pr
-
-        # U2_pr = self.as3_2(U3)
-        # U2 = self.alpha7 * 10 * U2_ob + (1 - self.alpha7 * 10) * U2_pr
-
-        # U1_pr = self.as2_1(U2)
-        # U1 = self.alpha8 * 10 * U1_ob + (1 - self.alpha8 * 10) * U1_pr
-
-        # U0 = self.as1_0(U1)#===========================
 
 
         U0 = self.cnn8(U0)
 
         U1 = self.as0_1(U0)
-        U2 = self.as1_2(U1)
-        U3 = self.as2_3(U2)
-        U4 = self.as3_4(U3)
-        U5 = self.as4_5(U4)
+
+        U3 = self.as1_3(U1)
+
+        U5 = self.as3_5(U3)
         
         U_test = None
 
         a1 = self.alpha1
-        a2 = self.alpha2
+
         a3 = self.alpha3
-        a4 = self.alpha4
+
         a5 = self.alpha5
 
 
         x1p = self.s(U1)
-        x2p = self.s(U2)
+
         x3p = self.s(U3)
-        x4p = self.s(U4)
+
         x5p = self.s(U5)
-        # x6p = self.s(U6)
+
        
-        return x1p, x2p, x3p, x4p, x5p, U1, a1, a2, a3, a4, a5
+        return x1p, x3p, x5p, U1, a1, a3, a5
 
 def build_model(size=(768,768)):
-    net = YBMS(size=size)
-    net.load_state_dict(torch.load("I:\\finalYBMS\\params\\params9\\bestparams.pth"))
+    net_skin = YBMS(size=size)
+    net_skin.load_state_dict(torch.load("I:\\finalYBMS\\params\\params9\\bestparams.pth"))
+    net = YBMS5_3(size=size)
+
+    net.cnn1 = net_skin.cnn1
+    net.cnn3 = net_skin.cnn3
+    net.cnn5 = net_skin.cnn5
+    net.cnn8 = net_skin.cnn8
+    net.alpha1 = net_skin.alpha1
+    net.alpha3 = net_skin.alpha3
+    net.alpha5 = net_skin.alpha5
+    net.alpha7 = net_skin.alpha7
+    net.alpha9 = net_skin.alpha9    
     # net.cnn8 = UNET(2)
 
     # for param in net.parameters():

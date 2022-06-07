@@ -2,7 +2,8 @@ import torch
 import torch.optim as optim
 from train_support import * 
 
-from models.YBMS import YBMS, build_model
+# from models.YBMS import YBMS, build_model
+from models.YBMS5_3 import YBMS5_3, build_model
 from dataset import Data
 import time
 
@@ -11,8 +12,8 @@ if __name__ == "__main__":
     print(time.asctime( time.localtime(time.time())))
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    # net = build_model().to(device)
-    net = YBMS().to(device) 
+    net = build_model().to(device)
+    # net = YBMS().to(device) 
 
  
     lr = 1e-4
