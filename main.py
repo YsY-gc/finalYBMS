@@ -3,7 +3,7 @@ import torch.optim as optim
 from train_support import * 
 
 # from models.YBMS import YBMS, build_model
-from models.YBMS5_3 import YBMS5_3, build_model
+from models.YBMS5_2 import YBMS5_2, build_model
 from dataset import Data
 import time
 

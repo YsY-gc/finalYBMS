@@ -6,7 +6,7 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from models.YBMS import *
 from models.YBMS import AS
-from models.YBMS5_3 import YBMS5_3
+from models.YBMS5_2 import YBMS5_2
 from PIL import Image
 import os
 
@@ -37,8 +37,8 @@ def np_cal_psnr(y_hat,y):
 
 # net = build_model(size=(768,768)).to('cuda')
 # net = YBMS(size=(768,768)).to('cuda')
-net = YBMS5_3(size=(768,768)).to('cuda')
-net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params23_3\\bestparams.pth'))
+net = YBMS5_2(size=(768,768)).to('cuda')
+net.load_state_dict(torch.load('I:\\finalYBMS\\params\\params23_2\\bestparams.pth'))
 net.eval()
 
 
@@ -73,14 +73,14 @@ def test_param(file_name):
     input6 = input6.to('cuda')
    
 
-    x1p, x3p, x5p, U1, a1, a3, a5= net(input1, input3, input5)
+    x1p, x3p, U1, a1= net(input1, input3)
 
 
     print("x1 x1pp psnr: ", cal_psnr(x1p,input1))
     # print("x2 x2pp psnr: ", cal_psnr(x2p,input2))
     print("x3 x3pp psnr: ", cal_psnr(x3p,input3))
     # print("x4 x4pp psnr: ", cal_psnr(x4p,input4))
-    print("x5 x5pp psnr: ", cal_psnr(x5p,input5))
+    # print("x5 x5pp psnr: ", cal_psnr(x5p,input5))
 
 
 # z=[0.710mm 1.185mm 1.685mm 2.178mm 2.682mm 3.180mm]
